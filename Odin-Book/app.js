@@ -1,12 +1,15 @@
+//Packages
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 
+//Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
+var authRouter = require('./routes/auth');
 var profileRouter = require('./routes/profile');
 var showPageRouter = require('./routes/showPage');
 var signupRouter = require('./routes/signup');
@@ -42,8 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //
 /////////NOTE: HOME PAGE HAS TO BE LOGIN PAGE
 //
-app.use('/', indexRouter);
-// app.use('/', loginRouter);
+// app.use('/', indexRouter);
+app.use('/', authRouter);
 app.use('/users', usersRouter);
 app.use('/profile', profileRouter);
 app.use('/showpage', showPageRouter);
