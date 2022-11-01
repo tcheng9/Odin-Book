@@ -1,10 +1,15 @@
 const User = require('../models/user');
+const {body, validationResult}  = require('express-validator');
 
-exports.signup_get = (req, res, next) => {
+exports.login_get = (req, res, next) => {
     res.render('home');
 }
 
-exports.signup_post = (req, res, next) => {
-    res.send('signup post');
-}
+exports.login_post = [
+    (req,res,next) => {
+        const errors = validationResult(req);
+
+        res.send('post login test');
+    }
+]
 
