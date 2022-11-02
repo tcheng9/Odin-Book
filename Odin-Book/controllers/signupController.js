@@ -25,7 +25,7 @@ exports.signup_post = [
 
         const user = new User({
             username: req.body.username,
-            password: hashedPassword,
+            password: req.body.password,
             pendingFriendsRequests: 'none for now',
             friends: 'none for now',
         });

@@ -2,7 +2,7 @@
     Login
 </h1>
 
-<form action = '/login' method = "POST">
+<form action = '/' method = "POST">
     <div>
         <label for = "username"> Username </label>
         <input type = "text" id = "username", name = "username" required>
@@ -15,12 +15,12 @@
     <button type = "submit"> Submit </button>
 </form>
 
-<div>
-    <% if (user) { %>
-        <p> You are logged in </p>
-    <% } else { %>
-        <p> you are not logged in </p>
-    <% } %>
-</div>
+    <!-- <div>
+        <% if (user) { %>
+            <p> You are logged in </p>
+        <% } else { %>
+            <p> you are not logged in </p>
+        <% } %>
+    </div> -->
 
 <a href = "/signup"> Sign up </a>
