@@ -7,6 +7,8 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
+
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema;
 const session = require("express-session");
@@ -47,6 +49,21 @@ passport.use(
   })
 );
 
+//Facebook passport stragey
+passport.use(new FacebookStrategy({
+  clientID: process.env.CLIENT_ID_FB,
+  clientSecret: process.env.CLIENT_SECRET_FB,
+  callbackURL: "http://localhost:3000/auth/facebook/callback"
+},
+function(accessToken, refreshToken, profile, cb) {
+  User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    return cb(err, user);
+  });
+}
+));
+
+//FIGURE OUT HOW TO ADD FACEBOOK PATH
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -56,6 +73,10 @@ passport.deserializeUser(function(id, done) {
     done(err, user);
   });
 });
+
+
+
+
 
 var app = express();
 ///Mongoose setup
