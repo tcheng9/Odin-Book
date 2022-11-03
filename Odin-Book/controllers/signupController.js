@@ -28,6 +28,7 @@ exports.signup_post = [
             password: hashedPassword,
             pendingFriendsRequests: 'none for now',
             friends: 'none for now',
+            facebookId: "none",
         });
 
         if (!errors.isEmpty()) {

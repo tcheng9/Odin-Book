@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
-
+const findOrCreate = require("mongoose-findorcreate");
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema;
 const session = require("express-session");
@@ -49,20 +49,8 @@ passport.use(
   })
 );
 
-//Facebook passport stragey
-passport.use(new FacebookStrategy({
-  clientID: process.env.CLIENT_ID_FB,
-  clientSecret: process.env.CLIENT_SECRET_FB,
-  callbackURL: "http://localhost:3000/auth/facebook/callback"
-},
-function(accessToken, refreshToken, profile, cb) {
-  User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-    return cb(err, user);
-  });
-}
-));
 
-//FIGURE OUT HOW TO ADD FACEBOOK PATH
+////////passport serializers for normal logins
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -78,8 +66,23 @@ passport.deserializeUser(function(id, done) {
 
 
 
+
+
+
+//FIGURE OUT HOW TO ADD FACEBOOK PATH
+
+
+
+
+
+
+
 var app = express();
 ///Mongoose setup
+
+//FIGURE OUT HOW TO ADD FACEBOOK PATH
+
+
 
 //Url
 
@@ -88,6 +91,14 @@ const mongoDb = "mongodb+srv://tcheng:" + mongoPw + "@cluster0.noy7cwp.mongodb.n
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
+
+//Session configuration
+// Authentication configuration
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: 'cats' 
+}));
 
 
 
@@ -103,6 +114,30 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Facebook passport stragey
+passport.use(new FacebookStrategy({
+  clientID: process.env.CLIENT_ID_FB,
+  clientSecret: process.env.CLIENT_SECRET_FB,
+  callbackURL: "http://localhost:4000/facebook/callback"
+},
+function(accessToken, refreshToken, profile, cb) {
+  User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    console.log(user);
+    return cb(err, user);
+  });
+}
+));
+
+app.get('/facebook', passport.authenticate('facebook'));
+
+app.get('/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/signup' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+///////////END OF FACEBOOK STRATEGY
 
 
 app.use(function(req, res, next) {
