@@ -117,19 +117,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Facebook passport stragey
 passport.use(new FacebookStrategy({
-  clientID: process.env.CLIENT_ID_FB,
-  clientSecret: process.env.CLIENT_SECRET_FB,
-  callbackURL: "http://localhost:4000/facebook/callback"
-},
-function(accessToken, refreshToken, profile, cb) {
-  User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-    console.log(user);
-    return cb(err, user);
-  });
-}
+    clientID: process.env.CLIENT_ID_FB,
+    clientSecret: process.env.CLIENT_SECRET_FB,
+    callbackURL: "http://localhost:4000/facebook/callback",
+    profileFields: ['id', 'displayName', 'email']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
+    User.findOrCreate(
+      {
+        facebookId: profile.id,
+        displayName: profile.displayName,
+        
+      }, 
+      function (err, user) {
+        return cb(err, user);
+      });
+  }
 ));
 
-app.get('/facebook', passport.authenticate('facebook'));
+app.get('/facebook', passport.authenticate('facebook', {
+  scope: ['email']
+}));
 
 app.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/signup' }),
