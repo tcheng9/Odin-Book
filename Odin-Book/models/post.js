@@ -6,7 +6,7 @@ const PostSchema = new Schema(
         title: {type: String},
         authorId: {type: String},
         commentId: {type: String},
-        content: {type: String},
+        message: {type: String},
         likes: {type: String}, //How to deal with likes counts and likes users?
         timestamp: {type: String}
     }

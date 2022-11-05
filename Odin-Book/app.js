@@ -23,6 +23,7 @@ var profileRouter = require('./routes/profile');
 var showPageRouter = require('./routes/showPage');
 var signupRouter = require('./routes/signup');
 var timelineRouter = require('./routes/timeline');
+var postRouter = require('./routes/createPost');
 require("dotenv").config();
 
 
@@ -144,7 +145,7 @@ app.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/signup' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('/timeline');
   });
 ///////////END OF FACEBOOK STRATEGY
 
@@ -165,7 +166,7 @@ app.use('/profile', profileRouter);
 app.use('/showpage', showPageRouter);
 app.use('/signup', signupRouter);
 app.use('/timeline', timelineRouter);
-
+app.use('/posts', postRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
