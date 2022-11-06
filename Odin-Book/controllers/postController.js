@@ -4,6 +4,23 @@ const bcrypt = require("bcrypt");
 const passport = require('passport');
 const user = require('../models/user');
 
+/* GET all post */
+// exports.get_post = (req, res, next) => {
+//     Post.find({})
+//         .exec(function(err, posts) {
+//             if(err){
+//                 return res.send('error');
+//             }
+
+//             res.render('timeline', {
+//                 title: 'All posts',
+//                 user: req.user,
+//                 posts: posts,
+//             })
+//         })
+// };
+
+/* (POST) create a post function */
 exports.create_post = [
     body('title', 'title cannot be empty')
         .trim()

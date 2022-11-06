@@ -10,5 +10,17 @@
     This is where posts will go
 </div>
 
+<div>
+    <% if (user) {%> 
+        <p> <%= user._id %> </p> 
+    <%} %>
+    <% posts.forEach(function(post) { %> 
+        <p> <%= post.title %> </p>
+        <button> Like </button>
+        
+    <% })%> 
+
+    
+</div>
 
 <a href = "./posts/createpost"> Create a Post </a>
