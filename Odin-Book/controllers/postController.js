@@ -33,9 +33,11 @@ exports.create_post = [
     async (req, res, next) => {
         const errors = validationResult(req);
 
+        console.log(req.params.id);
+
         const post = new Post({
             title: req.body.title,
-            authorId: 'placeholder',
+            authorId: req.params.id,
             commentId: 'placeholder',
             message: req.body.message,
             likes: 'placeholder',
