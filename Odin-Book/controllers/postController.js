@@ -33,14 +33,14 @@ exports.create_post = [
     async (req, res, next) => {
         const errors = validationResult(req);
 
-        console.log(req.params.id);
+        console.log(req.user);
 
         const post = new Post({
             title: req.body.title,
-            authorId: req.params.id,
+            authorId: req.user.id,
             commentId: 'placeholder',
             message: req.body.message,
-            likes: 'placeholder',
+            likes: ["user1", "user2", "user3"],
             timestamp: 'placeholder'
         })
 
@@ -58,10 +58,10 @@ exports.create_post = [
     }
 ]
 
-// 
-// title: {type: String},
-// authorId: {type: String},
-// commentId: {type: String},
-// message: {type: String},
-// likes: {type: String}, //How to deal with likes counts and likes users?
-// timestamp: {type: String}
+
+//Figuring out Like button
+exports.like_button_post = [
+    (req, res, next) => {
+        res.render('timeline');
+    }
+]
