@@ -20,3 +20,18 @@ exports.get_post = (req, res, next) => {
             })
         })
 };
+
+
+//Figuring out Like button
+exports.like_button = [
+
+
+    (req, res, next) => {
+        console.log(req.post);
+        res.render('timeline', {
+            user: req.user,
+            posts: req.posts
+        });
+    }
+]
+

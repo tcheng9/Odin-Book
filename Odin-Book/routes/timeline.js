@@ -15,5 +15,22 @@ router.get('/createpost', function(req, res, next) {
 /* POST Create a post */
 
 
+//LIKE Functionality
+
+
+router.post('/', timeline_controller.like_button)
+
+router.get('/likes', function(req, res, next) {
+  res.send('likes page');
+})
+
+
+router.post('/likes', function(req, res, next) {
+  console.log(req.user)
+  console.log(req.post);
+
+  res.render('likes');
+})
+
 
 module.exports = router;

@@ -9,41 +9,60 @@ exports.signup_get = (req, res, next) => {
     res.render('signup');
 }
 
-exports.signup_post = [
-    body('username', 'username cannot be empty')    
-        .trim()
-        .isLength({min:1})
-        .escape(),
-    body('password', 'password cannot be empty')
-        .trim()
-        .isLength({min:1})
-        .escape(),
-    async (req, res, next) => {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+// exports.signup_post = [
+//     body('username', 'username cannot be empty')    
+//         .trim()
+//         .isLength({min:1})
+//         .escape(),
+//     body('password', 'password cannot be empty')
+//         .trim()
+//         .isLength({min:1})
+//         .escape(),
+//     async (req, res, next) => {
+//         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         
-        const errors = validationResult(req);
+//         const errors = validationResult(req);
 
-        const user = new User({
-            username: req.body.username,
-            password: hashedPassword,
-            pendingFriendsRequests: 'none for now',
-            friends: 'none for now',
-            facebookId: "none",
-        });
+//         const user = new User({
+//             username: req.body.username,
+//             password: hashedPassword,
+//             pendingFriendsRequests: 'none for now',
+//             friends: 'none for now',
+//             facebookId: "none",
+//         });
 
-        if (!errors.isEmpty()) {
-            //If there are errors, return the errors
-            return res.render('signup', {
-                user,
-                errors:errors.array()
-            });
-        } else {
-            //If there aren't errors, save the user
-            user.save((err) => {
-                if (err) return next(err);
-                return res.redirect('/');
-            })
-        }
-    }
+//         if (!errors.isEmpty()) {
+//             //If there are errors, return the errors
+//             return res.render('signup', {
+//                 user,
+//                 errors:errors.array()
+//             });
+//         } else {
+//             //If there aren't errors, save the user
+//             user.save((err) => {
+//                 if (err) return next(err);
+//                 return res.redirect('/');
+//             })
+//         }
+//     }
     
-]
+// ]
+
+exports.signup_post = async function (req, res, next) {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    const user = new User({
+        username: req.body.username,
+        password: hashedPassword,
+        pendingFriendsRequests: req.body.pendingFriendsRequests,
+        friends: req.body.friends,
+        facebookId: req.body.facebookId,
+    });
+
+    try{
+        const newUser = await user.save();
+        res.status(201).json(newUser);
+    } catch (err) {
+        res.status(401).json({message: err.message});
+    }
+}

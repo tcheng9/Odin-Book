@@ -1,0 +1,19 @@
+POST http://localhost:4000/signup
+Content-Type: application/json
+
+{
+    "username": "test1",
+    "password": "test1",
+    "pendingFriendsRequests": "none for now",
+    "friends": "none for now",
+    "facebookId": "none"
+}
+###
+
+POST http://localhost:4000/
+Content-Type: application/json
+
+{
+    "username": "test1",
+    "password": "test1"
+}

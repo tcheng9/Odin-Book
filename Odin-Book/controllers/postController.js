@@ -58,10 +58,3 @@ exports.create_post = [
     }
 ]
 
-
-//Figuring out Like button
-exports.like_button_post = [
-    (req, res, next) => {
-        res.render('timeline');
-    }
-]

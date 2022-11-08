@@ -13,17 +13,27 @@
 <div>
     <% if (user) {%> 
         <p> user id: <%= user._id %> </p> 
-    <%} %>
+    <%} else { %>
+        <p> Not logged in </p>
+    <% } %>
 
     <% posts.forEach(function(post) { %> 
         <p> <%= post.title %> </p>
         <p> Post ID:</p>
         <p> <%= post._id %> </p>
-        <button> Like </button>
+        
+        <form action = '/timelime/likes' method = "POST">
+            <button type = "submit"> Like </button>
+        </form>
+    
         
     <% })%> 
 
     
 </div>
+
+<script>
+
+</script>
 
 <a href = "./posts/createpost"> Create a Post </a>
